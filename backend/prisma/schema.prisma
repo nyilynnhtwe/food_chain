@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String      @id @default(uuid())
+  name     String
+  email    String   @unique
+  password String
+  role     UserRole   @default(CUSTOMER) // 'customer', 'restaurantOwner', 'rider'
+  orders   Order[]
+  Restaurant Restaurant[]
+}
+
+model Restaurant {
+  id       String      @id @default(uuid())
+  name     String
+  ownerId  String
+  owner    User     @relation(fields: [ownerId], references: [id])
+  menus    Menu[]
+  Order Order[]
+}
+
+model Menu {
+  id       String      @id @default(uuid())
+  name          String
+  price         Float
+  available     Boolean  @default(true)
+  restaurantId  String
+  restaurant    Restaurant @relation(fields: [restaurantId], references: [id])
+
+  OrderItem OrderItem[]
+}
+
+model OrderItem {
+  id       String      @id @default(uuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id])
+  menuId    String
+  menu      Menu     @relation(fields: [menuId], references: [id])
+  quantity  Int
+}
+
+model Order {
+  id       String      @id @default(uuid())
+  customerId  String
+  customer    User     @relation(fields: [customerId], references: [id])
+  restaurantId String
+  restaurant  Restaurant @relation(fields: [restaurantId], references: [id])
+  orderItems  OrderItem[]
+  status      OrderStatus   @default(PENDING)
+}
+
+enum OrderStatus {
+  PENDING
+  ACCEPTED
+  IN_PROGRESS
+  DELIVERED
+  CANCELLED
+}
+
+enum UserRole {
+  CUSTOMER
+  RESTAURANT_OWNER
+  RIDER
+}
