@@ -1,4 +1,5 @@
-import express from "express";
+import { CreateOrder } from "../controllers/orderController";
+import express, { Request, Response } from "express";
 
 const orderRouter = express.Router();
 
@@ -7,7 +8,7 @@ orderRouter.get("/", (req, res) => {
 });
 
 orderRouter.post("/", (req, res) => {
-  res.send("order route");
+  CreateOrder(req, res);
 });
 
 orderRouter.get("/:id", (req, res) => {

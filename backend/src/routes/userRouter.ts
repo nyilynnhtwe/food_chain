@@ -1,7 +1,6 @@
-import prisma from "../../db/prisma";
+import prisma from "../db/prisma";
 import express from "express";
-import UserProfile from "../../interfaces/user_profile";
-import createResponse from "../../utils/response";
+import createResponse from "../utils/response";
 
 const userRouter = express.Router();
 

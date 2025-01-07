@@ -1,4 +1,4 @@
-import prisma from "db/prisma";
+import prisma from "../db/prisma";
 import { Request, Response, NextFunction } from "express";
 import {
   LoginRequest,
@@ -7,8 +7,8 @@ import {
   RegisterResponse,
 } from "interfaces/login.interface";
 import bcrypt from "bcrypt";
-import createResponse from "utils/response";
-import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from "utils/jwt.utils";
+import createResponse from "../utils/response";
+import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from "../utils/jwt.utils";
 
 export const login = async (req: Request, res: Response) => {
   const loginData: LoginRequest = req.body;

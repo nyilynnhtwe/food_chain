@@ -2,13 +2,14 @@ import express from "express";
 import orderRouter from "./orderRouter";
 import userRouter from "./userRouter";
 import authRouter from "./authRouter";
-import authenticate from "../middlewares/auth";
+import authenticated from "../middlewares/auth";
+import restaurantRouter from "./restaurantRouter";
 
 const indexRouter = express.Router();
 
-
+indexRouter.use("/restaurant",authenticated,restaurantRouter);
 indexRouter.use("/order",orderRouter);
-indexRouter.use("/user", authenticate ,userRouter);
+indexRouter.use("/user", authenticated ,userRouter);
 indexRouter.use("/auth",authRouter);  
 
 indexRouter.get("/", (req, res) => {
