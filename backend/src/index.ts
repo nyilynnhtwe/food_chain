@@ -8,7 +8,6 @@ const PORT = process.env.PORT || 4000;
 const app = express();
 app.use(bodyParser.json());
 
-
 app.use("/api/v1",indexRouter);
 
 app.listen(PORT, () => {

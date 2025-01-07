@@ -15,3 +15,9 @@ export interface RegisterRequest {
   password: string;
   role?: string; // role is optional if it may not always be provided
 }
+
+export interface RegisterResponse {
+  name: string;
+  email: string;
+  role?: string; // role is optional if it may not always be provided
+}

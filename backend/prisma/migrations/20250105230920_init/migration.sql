@@ -1,13 +1,16 @@
 -- CreateEnum
 CREATE TYPE "OrderStatus" AS ENUM ('PENDING', 'ACCEPTED', 'IN_PROGRESS', 'DELIVERED', 'CANCELLED');
 
+-- CreateEnum
+CREATE TYPE "UserRole" AS ENUM ('CUSTOMER', 'RESTAURANT_OWNER', 'RIDER');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "role" TEXT NOT NULL DEFAULT 'customer',
+    "role" "UserRole" NOT NULL DEFAULT 'CUSTOMER',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

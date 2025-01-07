@@ -1,13 +1,14 @@
 import express from "express";
-import orderRouter from "./order/orderRouter";
-import userRouter from "./user/userRouter";
-import authRouter from "./auth/authRouter";
+import orderRouter from "./orderRouter";
+import userRouter from "./userRouter";
+import authRouter from "./authRouter";
+import authenticate from "../middlewares/auth";
 
 const indexRouter = express.Router();
 
 
-indexRouter.use("orders",orderRouter);
-indexRouter.use("user",userRouter);
+indexRouter.use("/order",orderRouter);
+indexRouter.use("/user", authenticate ,userRouter);
 indexRouter.use("/auth",authRouter);  
 
 indexRouter.get("/", (req, res) => {

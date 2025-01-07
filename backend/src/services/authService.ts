@@ -1,25 +1,16 @@
-import express from "express";
-import bcrypt from "bcrypt";
-import createResponse from "../../utils/response";
-import prisma from "../../db/prisma";
+import prisma from "db/prisma";
+import { Request, Response, NextFunction } from "express";
 import {
   LoginRequest,
   LoginResponse,
   RegisterRequest,
+  RegisterResponse,
 } from "interfaces/login.interface";
-import {
-  generateAccessToken,
-  generateRefreshToken,
-  verifyRefreshToken,
-} from "../../utils/jwt.utils";
+import bcrypt from "bcrypt";
+import createResponse from "utils/response";
+import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from "utils/jwt.utils";
 
-const authRouter = express.Router();
-
-authRouter.get("/", (req, res) => {
-  res.send("auth route");
-});
-
-authRouter.post("/login", async (req, res) => {
+export const login = async (req: Request, res: Response) => {
   const loginData: LoginRequest = req.body;
   const user = await prisma.user.findUnique({
     where: {
@@ -45,9 +36,9 @@ authRouter.post("/login", async (req, res) => {
     refreshToken: refreshToken,
   };
   res.status(200).send(createResponse(true, loginResponse));
-});
+};
 
-authRouter.post("/register", async (req, res) => {
+export const register = async (req: Request, res: Response) => {
   const registerRequest: RegisterRequest = req.body;
   const userCheck = await prisma.user.findUnique({
     where: {
@@ -68,11 +59,16 @@ authRouter.post("/register", async (req, res) => {
         password: encryptedPassword,
       },
     });
-    res.status(201).send(createResponse(true, user));
+    const response: RegisterResponse = {
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    };
+    res.status(201).send(createResponse(true, response));
   }
-});
+};
 
-authRouter.post("/refresh", async (req, res) => {
+export const refresh = async (req: Request, res: Response) => {
   const inputRefreshToken = req.body.refreshToken;
   if (!inputRefreshToken) {
     res
@@ -87,7 +83,7 @@ authRouter.post("/refresh", async (req, res) => {
     }
     const accessToken = generateAccessToken({ id: userId });
     const refreshToken = generateRefreshToken({ id: userId });
-    const response : LoginResponse = {
+    const response: LoginResponse = {
       accessToken: accessToken,
       refreshToken: refreshToken,
     };
@@ -97,6 +93,4 @@ authRouter.post("/refresh", async (req, res) => {
       .status(400)
       .send(createResponse(false, undefined, "Invalid Refresh Token"));
   }
-});
-
-export default authRouter;
+};
