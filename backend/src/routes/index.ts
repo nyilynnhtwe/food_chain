@@ -8,7 +8,7 @@ import restaurantRouter from "./restaurantRouter";
 const indexRouter = express.Router();
 
 indexRouter.use("/restaurant",authenticated,restaurantRouter);
-indexRouter.use("/order",orderRouter);
+indexRouter.use("/order",authenticated,orderRouter);
 indexRouter.use("/user", authenticated ,userRouter);
 indexRouter.use("/auth",authRouter);  
 

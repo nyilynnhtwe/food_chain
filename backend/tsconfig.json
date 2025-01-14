@@ -6,6 +6,7 @@
     "baseUrl": "./src",
     "sourceMap": true,
     "strict": true,
+    "resolveJsonModule": true,
     "noImplicitAny": true
   },
   "include": ["./src/**/*"]

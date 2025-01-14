@@ -15,6 +15,8 @@ model User {
   role     UserRole   @default(CUSTOMER) // 'customer', 'restaurantOwner', 'rider'
   orders   Order[]
   restaurant Restaurant[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 }
 
 model Restaurant {
@@ -22,27 +24,60 @@ model Restaurant {
   name     String
   ownerId  String
   owner    User     @relation(fields: [ownerId], references: [id])
-  menus    Menu[]
+  locationId  String
+  location    Location     @relation(fields: [locationId], references: [id])
+  items    Item[]
   order Order[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 }
 
-model Menu {
-  id       String      @id @default(uuid())
-  name          String
-  price         Float
-  available     Boolean  @default(true)
-  restaurantId  String
-  restaurant    Restaurant @relation(fields: [restaurantId], references: [id])
-  orderItem OrderItem[]
+model Location {
+  id         String      @id @default(uuid())
+  address    String
+  province   String      @default("Bangkok")
+  districtId String
+  district   District @relation(fields: [districtId], references: [id])
+  Restaurant Restaurant[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model District {
+  id         String      @id @default(uuid())
+  name       String
+  Location Location[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model Item {
+  id            String      @id @default(uuid())
+  name          String      
+  description   String?     
+  price         Float       
+  available     Boolean     @default(true)
+  category      String      
+  imageUrl      String?     
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  restaurantId  String      
+  restaurant    Restaurant  @relation(fields: [restaurantId], references: [id]) // Relationship to the Restaurant model
+  orderItem     OrderItem[] 
+  @@index([name])
+  @@index([category])
+  @@index([restaurantId])
 }
 
 model OrderItem {
   id       String      @id @default(uuid())
   orderId   String
   order     Order    @relation(fields: [orderId], references: [id])
-  menuId    String
-  menu      Menu     @relation(fields: [menuId], references: [id])
+  itemId    String
+  item      Item     @relation(fields: [itemId], references: [id])
   quantity  Int
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 }
 
 model Order {
@@ -53,6 +88,8 @@ model Order {
   restaurant  Restaurant @relation(fields: [restaurantId], references: [id])
   orderItems  OrderItem[]
   status      OrderStatus   @default(PENDING)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 }
 
 enum OrderStatus {

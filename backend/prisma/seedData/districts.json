@@ -1,0 +1,208 @@
+{
+    "province": {
+        "id": "1",
+        "name": "Bangkok",
+        "districts": [
+            {
+                "id": "1",
+                "name": "Bang Bon"
+            },
+            {
+                "id": "2",
+                "name": "Bang Kapi"
+            },
+            {
+                "id": "3",
+                "name": "Bang Khun Thian"
+            },
+            {
+                "id": "4",
+                "name": "Bang Na"
+            },
+            {
+                "id": "5",
+                "name": "Bang Phlat"
+            },
+            {
+                "id": "6",
+                "name": "Bang Rak"
+            },
+            {
+                "id": "7",
+                "name": "Bang Sue"
+            },
+            {
+                "id": "8",
+                "name": "Bueng Kum"
+            },
+            {
+                "id": "9",
+                "name": "Chom Thong"
+            },
+            {
+                "id": "10",
+                "name": "Din Daeng"
+            },
+            {
+                "id": "11",
+                "name": "Don Mueang"
+            },
+            {
+                "id": "12",
+                "name": "Dusit"
+            },
+            {
+                "id": "13",
+                "name": "Huai Khwang"
+            },
+            {
+                "id": "14",
+                "name": "Khan Na Yao"
+            },
+            {
+                "id": "15",
+                "name": "Khlong Sam Wa"
+            },
+            {
+                "id": "16",
+                "name": "Khlong San"
+            },
+            {
+                "id": "17",
+                "name": "Lat Krabang"
+            },
+            {
+                "id": "18",
+                "name": "Lat Phrao"
+            },
+            {
+                "id": "19",
+                "name": "Min Buri"
+            },
+            {
+                "id": "20",
+                "name": "Nakhon Chai Si"
+            },
+            {
+                "id": "21",
+                "name": "Nong Chok"
+            },
+            {
+                "id": "22",
+                "name": "Nong Khaem"
+            },
+            {
+                "id": "23",
+                "name": "Pathum Wan"
+            },
+            {
+                "id": "24",
+                "name": "Prawet"
+            },
+            {
+                "id": "25",
+                "name": "Phasi Charoen"
+            },
+            {
+                "id": "26",
+                "name": "Phaya Thai"
+            },
+            {
+                "id": "27",
+                "name": "Pom Prap Sattru Phai"
+            },
+            {
+                "id": "28",
+                "name": "Pracha Uthit"
+            },
+            {
+                "id": "29",
+                "name": "Ratchathewi"
+            },
+            {
+                "id": "30",
+                "name": "Sai Mai"
+            },
+            {
+                "id": "31",
+                "name": "Sampeng"
+            },
+            {
+                "id": "32",
+                "name": "Sathon"
+            },
+            {
+                "id": "33",
+                "name": "Suan Luang"
+            },
+            {
+                "id": "34",
+                "name": "Taling Chan"
+            },
+            {
+                "id": "35",
+                "name": "Thawi Watthana"
+            },
+            {
+                "id": "36",
+                "name": "Thon Buri"
+            },
+            {
+                "id": "37",
+                "name": "Thung Khru"
+            },
+            {
+                "id": "38",
+                "name": "Vadhana"
+            },
+            {
+                "id": "39",
+                "name": "Wang Thonglang"
+            },
+            {
+                "id": "40",
+                "name": "Yannawa"
+            },
+            {
+                "id": "41",
+                "name": "Chatuchak"
+            },
+            {
+                "id": "42",
+                "name": "Chak Phong"
+            },
+            {
+                "id": "43",
+                "name": "Ratchaprarop"
+            },
+            {
+                "id": "44",
+                "name": "Bangkok Noi"
+            },
+            {
+                "id": "45",
+                "name": "Bang Sue"
+            },
+            {
+                "id": "46",
+                "name": "Phra Khanong"
+            },
+            {
+                "id": "47",
+                "name": "Phayathai"
+            },
+            {
+                "id": "48",
+                "name": "Min Buri"
+            },
+            {
+                "id": "49",
+                "name": "Sukhumvit"
+            },
+            {
+                "id": "50",
+                "name": "Ladprao"
+            }
+        ]
+    }
+}
