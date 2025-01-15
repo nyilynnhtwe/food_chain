@@ -42,12 +42,17 @@ export const getItems = async (req: Request, res: Response) => {
   try {
     const { restaurantId, category, name } = req.query;
 
-    const filters: any = {};
+    const filters: any = { restaurant : 
+      {
+        ownerId : req.body.id
+      }
+     };
 
     if (restaurantId) filters.restaurantId = restaurantId;
     if (category) filters.category = category;
     if (name) filters.name = { contains: name as string, mode: "insensitive" };
-
+    console.log(filters);
+    
     const items = await prisma.item.findMany({
       where: filters,
     });

@@ -5,9 +5,12 @@ import indexRouter from "./routes/index";
 import "dotenv/config";
 import compression from "compression";
 import rateLimit from "express-rate-limit";
+import swaggerJsDoc from "swagger-jsdoc";
+import swaggerOptions from "./configs/swaggerConfig";
+import swaggerUI from "swagger-ui-express";
+
 
 const PORT = process.env.PORT || 4000;
-
 const app = express();
 
 // every 100 requests from the same IP in 30 minutes
@@ -29,6 +32,9 @@ app.use(bodyParser.json());
 
 
 app.use("/api/v1", indexRouter);
+const specs = swaggerJsDoc(swaggerOptions);
+app.use("/api/v1/docs", swaggerUI.serve, swaggerUI.setup(specs));
+
 
 // Catch-all route for undefined endpoints
 app.use((req: Request, res: Response, next: NextFunction) => {

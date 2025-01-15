@@ -25,7 +25,17 @@ export const createRestaturant = async (req: Request, res: Response) => {
 };
 
 export const getRestaturants = async (req: Request, res: Response) => {
-  const restaurants = await prisma.restaurant.findMany({});
+  const restaurants = await prisma.restaurant.findMany({
+    where :
+    {
+      ownerId : req.body.id
+    },
+    include :
+    {
+      items : true,
+      orders : true
+    }
+  });
   res.status(201).send(createResponse(true, restaurants));
 };
 
@@ -33,7 +43,13 @@ export const getRestaturantById = async (req: Request, res: Response) => {
   const restaurants = await prisma.restaurant.findUnique({
     where: {
       id: req.params.id,
+        ownerId : req.body.id
     },
+    include :
+    {
+      items : true,
+      orders : true
+    }
   });
   res.status(201).send(createResponse(true, restaurants));
 };

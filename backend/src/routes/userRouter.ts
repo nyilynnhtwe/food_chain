@@ -6,8 +6,6 @@ const userRouter = express.Router();
 
 userRouter.get("/profile", async (req, res) => {
   const userId = req.body.id;
-  console.log(userId);
-
   const requestedUser = await prisma.user.findUnique({
     select: {
       id: true,
@@ -22,7 +20,6 @@ userRouter.get("/profile", async (req, res) => {
       id: userId,
     },
   });
-  console.log(requestedUser);
   res.status(200).send(createResponse(true, requestedUser));
 });
 

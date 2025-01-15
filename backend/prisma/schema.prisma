@@ -27,7 +27,7 @@ model Restaurant {
   locationId  String
   location    Location     @relation(fields: [locationId], references: [id])
   items    Item[]
-  order Order[]
+  orders Order[]
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 }
