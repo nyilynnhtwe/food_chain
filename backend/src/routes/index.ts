@@ -4,10 +4,12 @@ import userRouter from "./userRouter";
 import authRouter from "./authRouter";
 import authenticated from "../middlewares/auth";
 import restaurantRouter from "./restaurantRouter";
+import itemRouter from "./itemRouter";
 
 const indexRouter = express.Router();
 
 indexRouter.use("/restaurant",authenticated,restaurantRouter);
+indexRouter.use("/item",authenticated,itemRouter);
 indexRouter.use("/order",authenticated,orderRouter);
 indexRouter.use("/user", authenticated ,userRouter);
 indexRouter.use("/auth",authRouter);  

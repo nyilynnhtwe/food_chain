@@ -6,7 +6,7 @@ const generateAccessToken = (payload: any) => {
     throw new Error("Access Token Secret is not defined");
   }
   return jwt.sign(payload, process.env.JWT_ACCESS_TOKEN_SECRET, {
-    expiresIn: "1d",
+    expiresIn: "5hr",
   });
 };
 
