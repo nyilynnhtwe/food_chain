@@ -4,17 +4,22 @@ import createResponse from "../utils/response";
 import { Request, Response } from "express";
 
 export const createOrder = async (req: Request, res: Response) => {
+  const deliveryFee = req.body.deliveryFee || 50;
   const userId: string = req.body.id;
   const items: IItems[] = req.body.items;
-
+  const subtotal = items.reduce((sum, item) => sum + item.pricePerItem * item.quantity, 0);
+  const total = subtotal + deliveryFee;
   const orderItems = items.map((item) => ({
+    pricePerItem: item.pricePerItem,
     itemId: item.itemId,
-    quantity: parseInt(item.quantity), // Convert quantity to integer
+    quantity: item.quantity, // Convert quantity to integer
   }));
 
   const order = await prisma.order.create({
     data: {
       customerId: userId,
+      total,
+      subtotal,
       orderItems: {
         create: orderItems,
       },

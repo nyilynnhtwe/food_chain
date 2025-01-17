@@ -1,4 +1,5 @@
 export interface IItems {
   itemId: string;
-  quantity: string;
+  pricePerItem: number;
+  quantity: number;
 }

@@ -1,5 +1,5 @@
 import isOwner from "../middlewares/isOwner";
-import { CreateRestaturant, GetRestaturants, GetRestaturantById } from "../controllers/restaurantController";
+import { CreateRestaurant, GetRestaurants, GetRestaurantById } from "../controllers/restaurantController";
 import express, { Request, Response } from "express";
 
 const restaurantRouter = express.Router();
@@ -85,15 +85,15 @@ const restaurantRouter = express.Router();
  *         description: Server Error
  */
 restaurantRouter.get("/", (req: Request, res: Response) => {
-  GetRestaturants(req, res);
+  GetRestaurants(req, res);
 });
 
 restaurantRouter.post("/", isOwner ,async (req: Request, res: Response) => {
-  CreateRestaturant(req, res);
+  CreateRestaurant(req, res);
 });
 
 restaurantRouter.get("/:id", (req: Request, res: Response) => {
-  GetRestaturantById(req, res);
+  GetRestaurantById(req, res);
 });
 
 restaurantRouter.put("/:id", (req: Request, res: Response) => {

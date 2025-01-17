@@ -14,14 +14,17 @@ const transporter: Transporter = nodemailer.createTransport({
 const generateRestaurantCreatedTemplate = async (
   ownerEmail: string,
   ownerName: string,
+  restaurantName: string,
   subject: string,
-  text: string,
+  text: string
 ): Promise<any> => {
   const htmlTemplate = fs.readFileSync(
     root_template_dir + "createRestaurant.html",
     "utf8"
   );
-  const htmlString = htmlTemplate.replace("{{restaurantOwner}}", ownerName);
+  const htmlString = htmlTemplate
+    .replace("{{restaurantOwner}}", ownerName)
+    .replace("{{restaurantName}}", restaurantName);
 
   const mailOptions: SendMailOptions = {
     from: process.env.ADMIN_EMAIL_USER,

@@ -78,6 +78,9 @@ model OrderItem {
   order     Order?    @relation(fields: [orderId], references: [id])
   itemId    String
   item      Item     @relation(fields: [itemId], references: [id])
+  // pricePerItem represents the price for one item at the time of purchase
+  // because the price in the Item model can change over time
+  pricePerItem Float
   quantity  Int
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
@@ -87,6 +90,12 @@ model Order {
   id       String      @id @default(uuid())
   customerId  String
   customer    User     @relation(fields: [customerId], references: [id])
+  subtotal    Float
+  // for now , i can only supports fixed delivery fee.
+  // for the future development, we can calculate the delivery fee 
+  // based on the distance between the restaurant and the customer
+  deliveryFee Float    @default(50.0)
+  total  Float
   orderItems  OrderItem[]
   status      OrderStatus   @default(PENDING)
   createdAt     DateTime    @default(now())

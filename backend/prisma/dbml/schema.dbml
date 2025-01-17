@@ -66,6 +66,7 @@ Table OrderItem {
   order Order
   itemId String [not null]
   item Item [not null]
+  pricePerItem Float [not null]
   quantity Int [not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
@@ -75,6 +76,9 @@ Table Order {
   id String [pk]
   customerId String [not null]
   customer User [not null]
+  subtotal Float [not null]
+  deliveryFee Float [not null, default: 50]
+  total Float [not null]
   orderItems OrderItem [not null]
   status OrderStatus [not null, default: 'PENDING']
   createdAt DateTime [default: `now()`, not null]

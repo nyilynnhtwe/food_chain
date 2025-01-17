@@ -4,14 +4,14 @@ import createResponse from "../utils/response";
 import { Request, Response } from "express";
 import generateRestaurantCreatedTemplate from "../utils/mailer";
 
-export const createRestaturant = async (req: Request, res: Response) => {
+export const createRestaurant = async (req: Request, res: Response) => {
   const userId : string = req.body.id;
   const createOwner = await prisma.user.findUnique({
     where: {
       id: userId,
     },
   });
-  const createRestaturant = await prisma.restaurant.create({
+  const createRestaurant = await prisma.restaurant.create({
     data: {
       name: req.body.name,
       location: {
@@ -30,13 +30,14 @@ export const createRestaturant = async (req: Request, res: Response) => {
   await generateRestaurantCreatedTemplate(
     createOwner.email,
     createOwner.name,
+    req.body.name,
     "Restaurant Created",
     "Your restaurant has been created successfully."
   )
-  res.status(201).send(createResponse(true, createRestaturant));
+  res.status(201).send(createResponse(true, createRestaurant));
 };
 
-export const getRestaturants = async (req: Request, res: Response) => {
+export const getRestaurants = async (req: Request, res: Response) => {
   const restaurants = await prisma.restaurant.findMany({
     where :
     {
@@ -45,13 +46,12 @@ export const getRestaturants = async (req: Request, res: Response) => {
     include :
     {
       items : true,
-      orders : true
     }
   });
   res.status(201).send(createResponse(true, restaurants));
 };
 
-export const getRestaturantById = async (req: Request, res: Response) => {
+export const getRestaurantById = async (req: Request, res: Response) => {
   const restaurants = await prisma.restaurant.findUnique({
     where: {
       id: req.params.id,

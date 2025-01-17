@@ -1,14 +1,14 @@
 import { Request, Response } from "express";    
-import { createRestaturant, getRestaturants, getRestaturantById } from "../services/restaurantService";
+import { createRestaurant, getRestaurants, getRestaurantById } from "../services/restaurantService";
 
-export const CreateRestaturant = async (req: Request, res: Response) => {
-    await createRestaturant(req, res);
+export const CreateRestaurant = async (req: Request, res: Response) => {
+    await createRestaurant(req, res);
 };
 
-export const GetRestaturants = async (req: Request, res: Response) => {
-    await getRestaturants(req, res);
+export const GetRestaurants = async (req: Request, res: Response) => {
+    await getRestaurants(req, res);
 };
 
-export const GetRestaturantById = async (req: Request, res: Response) => {
-    await getRestaturantById(req, res);
+export const GetRestaurantById = async (req: Request, res: Response) => {
+    await getRestaurantById(req, res);
 };
