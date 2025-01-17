@@ -1,6 +1,7 @@
 import createResponse from "../utils/response";
 import { Request, Response, NextFunction } from "express";
 import { verifyAccessToken } from "../utils/jwt.utils";
+import prisma from "../db/prisma";
 
 const authenticated = async (
   req: Request,
@@ -12,8 +13,14 @@ const authenticated = async (
     res.status(401).send(createResponse(false, undefined, "No access token"));
   }
   try {
-    const userId = verifyAccessToken(accessToken);
+    const userId : string = verifyAccessToken(accessToken);
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
     req.body.id = userId;
+    req.body.role = user.role;
     next();
   } catch (error) {
     res

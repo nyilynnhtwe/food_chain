@@ -1,0 +1,110 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table User {
+  id String [pk]
+  name String [not null]
+  email String [unique, not null]
+  password String [not null]
+  role UserRole [not null, default: 'CUSTOMER']
+  orders Order [not null]
+  restaurant Restaurant [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Restaurant {
+  id String [pk]
+  name String [not null]
+  ownerId String [not null]
+  owner User [not null]
+  locationId String [not null]
+  location Location [not null]
+  items Item [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Location {
+  id String [pk]
+  address String [not null]
+  province String [not null, default: 'Bangkok']
+  districtId String [not null]
+  district District [not null]
+  Restaurant Restaurant [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table District {
+  id String [pk]
+  name String [not null]
+  Location Location [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Item {
+  id String [pk]
+  name String [not null]
+  description String
+  price Float [not null]
+  available Boolean [not null, default: true]
+  category String [not null]
+  imageUrl String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  restaurantId String [not null]
+  restaurant Restaurant [not null]
+  orderItem OrderItem [not null]
+}
+
+Table OrderItem {
+  id String [pk]
+  orderId String
+  order Order
+  itemId String [not null]
+  item Item [not null]
+  quantity Int [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Order {
+  id String [pk]
+  customerId String [not null]
+  customer User [not null]
+  orderItems OrderItem [not null]
+  status OrderStatus [not null, default: 'PENDING']
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Enum OrderStatus {
+  PENDING
+  ACCEPTED
+  IN_PROGRESS
+  DELIVERED
+  CANCELLED
+}
+
+Enum UserRole {
+  CUSTOMER
+  RESTAURANT_OWNER
+  RIDER
+}
+
+Ref: Restaurant.ownerId > User.id
+
+Ref: Restaurant.locationId > Location.id
+
+Ref: Location.districtId > District.id
+
+Ref: Item.restaurantId > Restaurant.id
+
+Ref: OrderItem.orderId > Order.id
+
+Ref: OrderItem.itemId > Item.id
+
+Ref: Order.customerId > User.id

@@ -1,9 +1,10 @@
+import isOwner from "../middlewares/isOwner";
 import { CreateRestaturant, GetRestaturants, GetRestaturantById } from "../controllers/restaurantController";
 import express, { Request, Response } from "express";
 
 const restaurantRouter = express.Router();
-
- /** GET Methods */
+ 
+/** GET Methods */
     /**
      * @openapi
      * '/api/v1/restaurant':
@@ -45,11 +46,49 @@ const restaurantRouter = express.Router();
      *        description: Server Error
      */
 
+    /** POST Method */
+/**
+ * @openapi
+ * '/api/v1/restaurant':
+ *  post:
+ *     security:
+ *      - BearerAuth: []
+ *     tags:
+ *     - Restaurant Controller
+ *     summary: Create a new restaurant
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - address
+ *               - districtId
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "The Gourmet Kitchen"
+ *               address:
+ *                 type: string
+ *                 example: "123 Foodie Lane, Taste City"
+ *               districtId:
+ *                 type: string
+ *                 example: "Italian"
+ *     responses:
+ *       201:
+ *         description: Restaurant created successfully
+ *       400:
+ *         description: Bad Request - Invalid input
+ *       500:
+ *         description: Server Error
+ */
 restaurantRouter.get("/", (req: Request, res: Response) => {
   GetRestaturants(req, res);
 });
 
-restaurantRouter.post("/", async (req: Request, res: Response) => {
+restaurantRouter.post("/", isOwner ,async (req: Request, res: Response) => {
   CreateRestaturant(req, res);
 });
 

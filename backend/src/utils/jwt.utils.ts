@@ -1,5 +1,4 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
-import "dotenv/config";
 
 const generateAccessToken = (payload: any) => {
   if (!process.env.JWT_ACCESS_TOKEN_SECRET) {

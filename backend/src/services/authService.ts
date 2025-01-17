@@ -8,7 +8,11 @@ import {
 } from "interfaces/login.interface";
 import bcrypt from "bcrypt";
 import createResponse from "../utils/response";
-import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from "../utils/jwt.utils";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  verifyRefreshToken,
+} from "../utils/jwt.utils";
 
 export const login = async (req: Request, res: Response) => {
   const loginData: LoginRequest = req.body;
@@ -19,6 +23,7 @@ export const login = async (req: Request, res: Response) => {
   });
   if (!user) {
     res.status(400).send(createResponse(false, undefined, "User not found"));
+    return;
   }
   const passwordMatch = await bcrypt.compareSync(
     loginData.password,
@@ -27,7 +32,8 @@ export const login = async (req: Request, res: Response) => {
   if (!passwordMatch) {
     res
       .status(400)
-      .send(createResponse(false, undefined, "Password does not match"));
+      .send(createResponse(false, undefined, "'Invalid credentials."));
+    return;
   }
   const accessToken = generateAccessToken({ id: user.id });
   const refreshToken = generateRefreshToken({ id: user.id });

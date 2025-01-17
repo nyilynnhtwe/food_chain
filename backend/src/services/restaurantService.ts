@@ -2,9 +2,15 @@ import { connect } from "http2";
 import prisma from "../db/prisma";
 import createResponse from "../utils/response";
 import { Request, Response } from "express";
+import generateRestaurantCreatedTemplate from "../utils/mailer";
 
 export const createRestaturant = async (req: Request, res: Response) => {
-  const userId = req.body.id;
+  const userId : string = req.body.id;
+  const createOwner = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
   const createRestaturant = await prisma.restaurant.create({
     data: {
       name: req.body.name,
@@ -21,6 +27,12 @@ export const createRestaturant = async (req: Request, res: Response) => {
       },
     },
   });
+  await generateRestaurantCreatedTemplate(
+    createOwner.email,
+    createOwner.name,
+    "Restaurant Created",
+    "Your restaurant has been created successfully."
+  )
   res.status(201).send(createResponse(true, createRestaturant));
 };
 

@@ -1,3 +1,4 @@
+import isCustomer from "../middlewares/isCustomer";
 import { CreateOrder } from "../controllers/orderController";
 import express, { Request, Response } from "express";
 
@@ -7,7 +8,7 @@ orderRouter.get("/", (req, res) => {
   res.send("order route");
 });
 
-orderRouter.post("/", (req, res) => {
+orderRouter.post("/", isCustomer , (req, res) => {
   CreateOrder(req, res);
 });
 

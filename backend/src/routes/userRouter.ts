@@ -5,7 +5,7 @@ import createResponse from "../utils/response";
 const userRouter = express.Router();
 
 userRouter.get("/profile", async (req, res) => {
-  const userId = req.body.id;
+  const userId : string = req.body.id;
   const requestedUser = await prisma.user.findUnique({
     select: {
       id: true,
