@@ -10,7 +10,7 @@ const authenticated = async (
 ) => {
   const accessToken: string = req.header("Authorization")?.split(" ")[1] || "";
   if (!accessToken) {
-    res.status(401).send(createResponse(false, undefined, "No access token"));
+    res.status(401).send(createResponse(false, "No access token"));
   }
   try {
     const userId : string = verifyAccessToken(accessToken);
@@ -25,7 +25,7 @@ const authenticated = async (
   } catch (error) {
     res
       .status(403)
-      .send(createResponse(false, undefined, "Invalid access token"));
+      .send(createResponse(false, "Invalid access token"));
   }
 };
 

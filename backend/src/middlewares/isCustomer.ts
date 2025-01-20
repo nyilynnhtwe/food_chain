@@ -9,7 +9,7 @@ const isCustomer = async (req: Request, res: Response, next: NextFunction) => {
   } else {
     res
       .status(403)
-      .send(createResponse(false, undefined, "You are not a customer"));
+      .send(createResponse(false, "You are not a customer"));
   }
 };
 

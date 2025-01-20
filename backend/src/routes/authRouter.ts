@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction } from "express";
 import { Request, Response } from "express";
 import { Login, Refresh, Register } from "../controllers/authController";
 
@@ -92,17 +92,51 @@ authRouter.get("/", (req: Request, res: Response) => {
  *        description: Not Found
  *      500:
  *        description: Server Error
+ * '/api/v1/auth/refresh':
+ *  post:
+ *     security:
+ *      - BearerAuth: []
+ *     tags:
+ *     - Auth Controller
+ *     summary: Generate a new access token
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - refreshToken
+ *             properties:
+ *               refreshToken:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Restaurant created successfully
+ *       400:
+ *         description: Bad Request - Invalid input
+ *       500:
+ *         description: Server Error
  */
-authRouter.post("/login", async (req: Request, res: Response) => {
-  Login(req, res);
-});
+authRouter.post(
+  "/login",
+  async (req: Request, res: Response, next: NextFunction) => {
+    Login(req, res, next);
+  }
+);
 
-authRouter.post("/register", async (req: Request, res: Response) => {
-  Register(req, res);
-});
+authRouter.post(
+  "/register",
+  async (req: Request, res: Response, next: NextFunction) => {
+    Register(req, res, next);
+  }
+);
 
-authRouter.post("/refresh", async (req: Request, res: Response) => {
-  Refresh(req, res);
-});
+authRouter.post(
+  "/refresh",
+  async (req: Request, res: Response, next: NextFunction) => {
+    Refresh(req, res, next);
+  }
+);
 
 export default authRouter;

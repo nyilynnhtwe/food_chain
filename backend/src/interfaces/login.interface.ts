@@ -17,7 +17,7 @@ export interface RegisterRequest {
 }
 
 export interface RegisterResponse {
-  name: string;
-  email: string;
-  role?: string; // role is optional if it may not always be provided
+  name: string | null;
+  email: string | null;
+  role?: string | null; // role is optional if it may not always be provided
 }

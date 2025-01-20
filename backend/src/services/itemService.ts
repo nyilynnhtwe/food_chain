@@ -1,3 +1,4 @@
+import { Item, Restaurant } from "@prisma/client";
 import prisma from "../db/prisma";
 import createResponse from "../utils/response";
 import { Request, Response } from "express";
@@ -6,11 +7,11 @@ export const createItem = async (req: Request, res: Response) => {
   try {
     const { name, description, price, category, imageUrl, restaurantId } =
       req.body;
-
     // Verify if the restaurant exists
-    const restaurantExists = await prisma.restaurant.findUnique({
-      where: { id: restaurantId },
-    });
+    const restaurantExists: Restaurant | null =
+      await prisma.restaurant.findUnique({
+        where: { id: restaurantId },
+      });
 
     if (!restaurantExists) {
       return res
@@ -18,7 +19,7 @@ export const createItem = async (req: Request, res: Response) => {
         .send({ success: false, message: "Restaurant not found" });
     }
 
-    const newItem = await prisma.item.create({
+    const newItem: Item = await prisma.item.create({
       data: {
         name,
         description,
@@ -42,19 +43,18 @@ export const getItems = async (req: Request, res: Response) => {
   try {
     const { restaurantId, category, name } = req.query;
 
-    const filters: any = { restaurant : 
-      {
-        ownerId : req.body.id
-      }
-     };
+    const filters: any = {
+      restaurant: {
+        ownerId: req.body.id,
+      },
+    };
 
     if (restaurantId) filters.restaurantId = restaurantId;
     if (category) filters.category = category;
     if (name) filters.name = { contains: name as string, mode: "insensitive" };
-    const items = await prisma.item.findMany({
+    const items: Item[] | null = await prisma.item.findMany({
       where: filters,
     });
-
     res.status(200).send(createResponse(true, items));
   } catch (error) {
     if (error instanceof Error) {
