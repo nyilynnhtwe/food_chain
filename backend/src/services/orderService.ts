@@ -5,41 +5,63 @@ import { Request, Response } from "express";
 import { OrderStatus } from "@prisma/client";
 
 export const createOrder = async (req: Request, res: Response) => {
-  const deliveryFee = req.body.deliveryFee || 50;
-  const userId: string = req.body.id;
-  const items: IItems[] = req.body.items;
-  const subtotal = items.reduce(
-    (sum, item) => sum + item.pricePerItem * item.quantity,
-    0
-  );
-  const total = subtotal + deliveryFee;
-  const orderItems = items.map((item) => ({
-    pricePerItem: item.pricePerItem,
-    itemId: item.itemId,
-    quantity: item.quantity, // Convert quantity to integer
-  }));
+  try {
+    const deliveryFee = req.body.deliveryFee || 50;
+    const userId: string = req.body.id;
+    const items: IItems[] = req.body.items;
+    const subtotal = items.reduce(
+      (sum, item) => sum + item.pricePerItem * item.quantity,
+      0
+    );
+    const total = subtotal + deliveryFee;
+    const orderItems = items.map((item) => ({
+      pricePerItem: item.pricePerItem,
+      itemId: item.itemId,
+      quantity: item.quantity, // Convert quantity to integer
+    }));
 
-  const order = await prisma.order.create({
-    data: {
-      customerId: userId,
-      total,
-      subtotal,
-      orderItems: {
-        create: orderItems,
+    const order = await prisma.order.create({
+      data: {
+        customerId: userId,
+        total,
+        subtotal,
+        orderItems: {
+          create: orderItems,
+        },
+        status: OrderStatus.PENDING,
       },
-      status: OrderStatus.PENDING,
-    },
-    include: {
-      orderItems: true,
-    },
-  });
-  res.status(201).send(createResponse(true, order));
+      include: {
+        orderItems: true,
+      },
+    });
+    res.status(201).send(createResponse(true, order));
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).send(createResponse(false, error.message));
+    }
+  }
+};
+
+export const assignOrder = async (req: Request, res: Response) => {
+  try {
+    const orderId = req.params.id;
+    const riderId = req.body.riderId;
+    const updatedOrder = await prisma.order.update({
+      where: { id: orderId },
+      data: { riderId: riderId, status: OrderStatus.IN_PROGRESS },
+    });
+    res.status(201).send(createResponse(true, updatedOrder));
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).send(createResponse(false, error.message));
+    }
+  }
 };
 
 export const confirmOrder = async (req: Request, res: Response) => {
   try {
     const orderId = req.params.id;
-    const orderStatus : OrderStatus = req.body.status;
+    const orderStatus: OrderStatus = req.body.status;
     const order = await prisma.order.update({
       where: {
         id: orderId,
@@ -55,4 +77,3 @@ export const confirmOrder = async (req: Request, res: Response) => {
     }
   }
 };
-

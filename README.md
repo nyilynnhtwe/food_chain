@@ -5,3 +5,7 @@ This is a Node.js Express API built as a learning project to understand how to c
 ## Obsidian Map
 
 ![Obsidian Map](obsidian_map.jpg)
+
+
+[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=nyilynnhtwe)](https://github.com/anuraghazra/github-readme-stats)
+

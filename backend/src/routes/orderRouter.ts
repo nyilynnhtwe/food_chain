@@ -1,5 +1,5 @@
 import isCustomer from "../middlewares/isCustomer";
-import { CreateOrder, ConfirmOrder } from "../controllers/orderController";
+import { CreateOrder, ConfirmOrder, AssignOrder } from "../controllers/orderController";
 import express, { Request, Response } from "express";
 import isOwner from "../middlewares/isOwner";
 
@@ -72,7 +72,7 @@ const orderRouter = express.Router();
  *  post:
  *     tags:
  *     - Order Controller
- *     summary: Confirm an order by an owner whether it is accepted or cancelled
+ *     summary: Confirm an order by a user(May be Owner Or Rider) whether it is accepted,cancelled or delivered
  *     requestBody:
  *      required: true
  *      content:
@@ -104,6 +104,10 @@ orderRouter.get("/", (req, res) => {
 
 orderRouter.post("/", isCustomer, (req, res) => {
   CreateOrder(req, res);
+});
+
+orderRouter.post("/assign", isCustomer, (req, res) => {
+  AssignOrder(req, res);
 });
 
 orderRouter.post("/confirm", isOwner, (req, res) => {

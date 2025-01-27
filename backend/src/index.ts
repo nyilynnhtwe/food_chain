@@ -8,6 +8,8 @@ import rateLimit from "express-rate-limit";
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerOptions from "./configs/swaggerConfig";
 import swaggerUI from "swagger-ui-express";
+const chalk = import("chalk").then(m=>m.default);
+
 
 const PORT = process.env.PORT || 4000;
 const app = express();
@@ -41,6 +43,13 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.listen(PORT, async () => {
+  if ((process.env.ENV = "DEV")) {
+    console.log(`${(await chalk).bold.blue("------------------------------")}`);
+    console.log(`${(await chalk).bold.green("Server is running! 🚀")}`);
+    console.log(`${(await chalk).bold.blue("------------------------------")}`);
+    console.log(`Server : ${(await chalk).bold.white(`http://localhost:${PORT}`)}`);
+    console.log(`API Docs : ${(await chalk).bold.white(`http://localhost:${PORT}/api/v1/docs`)}`);
+    console.log(`${(await chalk).bold.blue("------------------------------")}`);
+  }
 });

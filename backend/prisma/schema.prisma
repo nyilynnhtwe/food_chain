@@ -12,94 +12,93 @@ datasource db {
 }
 
 model User {
-  id       String      @id @default(uuid())
-  name     String
-  email    String   @unique
-  password String
-  role     UserRole   @default(CUSTOMER)
-  orders   Order[]
-  restaurant Restaurant[]
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  id          String      @id @default(uuid())
+  name        String
+  email       String      @unique
+  password    String
+  role        UserRole    @default(CUSTOMER)
+  orders      Order[]     @relation("CustomerOrders") // For customers
+  assignedOrders Order[]  @relation("RiderOrders") // For riders
+  restaurant  Restaurant[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 }
 
 model Restaurant {
-  id       String      @id @default(uuid())
-  name     String
-  ownerId  String
-  owner    User     @relation(fields: [ownerId], references: [id])
+  id          String      @id @default(uuid())
+  name        String
+  ownerId     String
+  owner       User        @relation(fields: [ownerId], references: [id])
   locationId  String
-  location    Location     @relation(fields: [locationId], references: [id])
-  items    Item[]
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  location    Location    @relation(fields: [locationId], references: [id])
+  items       Item[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 }
 
 model Location {
-  id         String      @id @default(uuid())
-  address    String
-  province   String      @default("Bangkok")
-  districtId String
-  district   District @relation(fields: [districtId], references: [id])
-  Restaurant Restaurant[]
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  id          String      @id @default(uuid())
+  address     String
+  province    String      @default("Bangkok")
+  districtId  String
+  district    District    @relation(fields: [districtId], references: [id])
+  Restaurant  Restaurant[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 }
 
 model District {
-  id         String      @id @default(uuid())
-  name       String
-  Location Location[]
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  id          String      @id @default(uuid())
+  name        String
+  Location    Location[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 }
 
 model Item {
-  id            String      @id @default(uuid())
-  name          String      
-  description   String?     
-  price         Float       
-  available     Boolean     @default(true)
-  category      String      
-  imageUrl      String?     
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  restaurantId  String      
-  restaurant    Restaurant  @relation(fields: [restaurantId], references: [id]) // Relationship to the Restaurant model
-  orderItem     OrderItem[] 
+  id          String      @id @default(uuid())
+  name        String
+  description String?
+  price       Float
+  available   Boolean     @default(true)
+  category    String
+  imageUrl    String?
+  restaurantId String
+  restaurant  Restaurant  @relation(fields: [restaurantId], references: [id])
+  orderItem   OrderItem[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
   @@index([name])
   @@index([category])
   @@index([restaurantId])
 }
 
 model OrderItem {
-  id       String      @id @default(uuid())
-  orderId   String?
-  order     Order?    @relation(fields: [orderId], references: [id])
-  itemId    String
-  item      Item     @relation(fields: [itemId], references: [id])
-  // pricePerItem represents the price for one item at the time of purchase
-  // because the price in the Item model can change over time
+  id          String      @id @default(uuid())
+  orderId     String?
+  order       Order?      @relation(fields: [orderId], references: [id])
+  itemId      String
+  item        Item        @relation(fields: [itemId], references: [id])
   pricePerItem Float
-  quantity  Int
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  quantity    Int
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 }
 
 model Order {
-  id       String      @id @default(uuid())
+  id          String      @id @default(uuid())
   customerId  String
-  customer    User     @relation(fields: [customerId], references: [id])
+  customer    User        @relation("CustomerOrders", fields: [customerId], references: [id])
+  riderId     String?     // Optional, assigned only when a rider accepts the order
+  rider       User?       @relation("RiderOrders", fields: [riderId], references: [id])
   subtotal    Float
-  // for now , i can only supports fixed delivery fee.
-  // for the future development, we can calculate the delivery fee 
-  // based on the distance between the restaurant and the customer
-  deliveryFee Float    @default(50.0)
-  total  Float
+  deliveryFee Float        @default(50.0)
+  total       Float
   orderItems  OrderItem[]
-  status      OrderStatus   @default(PENDING)
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  status      OrderStatus  @default(PENDING)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }
 
 enum OrderStatus {
