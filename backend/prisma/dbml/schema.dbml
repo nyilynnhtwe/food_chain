@@ -63,8 +63,8 @@ Table Item {
 
 Table OrderItem {
   id String [pk]
-  orderId String
-  order Order
+  orderId String [not null]
+  order Order [not null]
   itemId String [not null]
   item Item [not null]
   pricePerItem Float [not null]
